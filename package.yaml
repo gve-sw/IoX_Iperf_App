@@ -1,10 +1,10 @@
 descriptor-schema-version: "2.7"
 info:
-  name: iox_iperf_pov
-  description: "IOx Docker Iperf POV"
-  version: "2.0"
-  author-link: "http://www.cisco.com"
-  author-name: "CISCO GVE DevNet"
+  name: gve_devnet/iox_iperf_app
+  version: "2.2"
+  description: "IOx Docker Iperf app"
+  author-link: "https://github.com/gve-sw"
+  author-name: "Cisco GVE DevNet"
 app:
   cpuarch: x86_64
   env:
@@ -12,7 +12,9 @@ app:
   resources:
     network:
     - interface-name: eth0
-      ports: {}
+      ports:
+        tcp:
+        - "5500"
     profile: c1.small
   startup:
     rootfs: rootfs.tar
@@ -20,6 +22,7 @@ app:
     - gunicorn
     - -b 0.0.0.0:5500
     - app:app
-    - --log-file ./webapp.log
+    - --log-file ${CAF_APP_LOG_DIR}/webapp.log
+    - --log-level debug
     workdir: /app/
   type: docker
