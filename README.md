@@ -63,24 +63,24 @@ Server listening on 5201
 - Build image :
 Build the iox package from the downloded folder  
 ```
-IoX_Iperf_App/ $ docker build -t gve_devnet/iox_iperf_app .
+app/ $ docker build -t gve_devnet/iox_iperf_app .
 ```
 
 Make sure your image has been built
 ```
 $ docker images
 REPOSITORY                 TAG                 IMAGE ID            CREATED             SIZE
-gve_devnet/iox_iperf_pov   latest              8c091382f51e        3 hours ago         71MB
+gve_devnet/iox_iperf_app   latest              8c091382f51e        3 hours ago         71MB
 alpine                     3.7                 6d1ef012b567        9 months ago        4.21MB
 ```
 - Package for IoX:
 Creat a package.tar file 
 ```
-IoX_Iperf_App/ $ ioxclient docker package gve_devnet/iox_iperf_pov:latest .
+IoX_Iperf_App/ $ ioxclient docker package gve_devnet/iox_iperf_app:latest .
 ```
 Deploy the app to IoX
 ```
-IoX_Iperf_App/ $ ioxclient application install iox_iperf_pov package.tar
+IoX_Iperf_App/ $ ioxclient application install iox_iperf_app package.tar
 Currently active profile :  default
 Command Name: application-install
 Saving current configuration
@@ -89,20 +89,20 @@ Successfully deployed
 ```
 Verify the Application state
 ```
-$ ioxclient application list
+IoX_Iperf_App/ $ ioxclient application list
 Currently using profile :  TEST
 Command Name: application-list
 List of installed apps :
- 1\. iox_iperf_pov --->  DEPLOYED
+ 1\. iox_iperf_app --->  DEPLOYED
 ```
 - Activate and run:server
 To activate the IOx application, run the following command
 ```
-IoX_Iperf_App/ $ ioxclient application activate --payload activation.json iox_iperf_pov
+IoX_Iperf_App/ $ ioxclient application activate --payload activation.json iox_iperf_app
 ```
 To start your application run the start command
 ```
-$ ioxclient application start
+IoX_Iperf_App/ $ ioxclient application start
 ```
 
 #### Run :
