@@ -1,11 +1,11 @@
 # CISCO IoX Iperf App
-[Iperf](https://iperf.fr/) is a network monitoring tool, in this prototype we embded this tool in a docker container to be shiped into IoX devices, this will enable insights on the network for customers acorss difrent IoT networks.
+[Iperf](https://iperf.fr/) is a network performance measurement and tuning tool, in this prototype we embded this tool in a docker container to be shiped into IoX devices, this will enable insights on the network for customers acorss difrent IoT networks.
 
 
-In this prototype we built a python flask app with the Iperf tool to monitor network link from the IoX device to a centrla Iperf server.
+In this prototype we built a python flask app with API access to Iperf tool it will be used to monitor network link from the IoX device container to a central Iperf server.
 ![alt text][Prototype]
 
-[Prototype]:./prototype.png "Prototype workflow"
+[Prototype]:img/prototype.png "Prototype workflow"
 
 ## Install:
 
@@ -20,10 +20,11 @@ $ sudo apt-get install docker-engine -y
 $ git clone https://github.com/gve-sw/IoX_Iperf_App.git
 ```
 
-#### Install dependencies :
-```
-$ pip3 install requirements.txt
-```
+#### Install ioxclient :
+ioxclient is a API tool devloped by CISCO to help you deploy your containers to IOX devices,To install ioxclient, you can find it at this [link](https://developer.cisco.com/docs/iox/#!iox-resource-downloads/downloads).
+
+#### Install Iperf binaries :
+You need the have the Iperf tool locally to test conecticity incase if your lab dosent have access to internet, the default Iperf server for testing for our app is 'bouygues.iperf.fr', To install Iperf tool, you can find it at this [link](https://iperf.fr/iperf-download.php).
 
 ## Setup:
 #### DevNet IoX sandbox :
@@ -31,22 +32,23 @@ You can deploy this prototype using IoX DevNet sanbox [IoX Lab](https://devnetsa
 The rest of this documenttation will assume using the DevNet Sandbox, you can use your own hardware you can find more details on how to setup your lab [here](https://developer.cisco.com/docs/iox/)
 
 #### IoX Client tool :
-You need the ioxclient to package and deploy the IOx Application. To install ioxclient, you can find it at this [link](https://developer.cisco.com/docs/iox/#!iox-resource-downloads/downloads).
+You need the ioxclient to package and deploy the IOx Application. 
 To get started, connect to your IoX host
 ```
 $ ioxclient profiles reset
 ```
 This command resets any previously set profiles and allows you to start fresh with the ioxclient profile wizard.
-With no profiles by default, the first time you run ioxclient it will create a configuration file in your home directory and you will be asked questions about the connection Profile you want to establish.
-If you are using the DevNet sandbox, use the following ip address 10.10.20.51 or 10.10.20.52 and credentials username: cisco, password: cisco instead of root and select 22 for the ssh default port instead of 2222. All other values should be fine at their defaults.
+With no profiles by default, the first time you run ioxclient it will create a configuration file in your home directory and you will be asked questions about the connection Profile you want to establish (IoX host Ip address, ports ...)
+if you are using the DevNet sanbox follow the stepes in this [link](https://developer.cisco.com/learning/tracks/iot/IoT-IOx-Apps/iot-iox-app-docker/step/9) to connect yto your IoX host
+if you are using your own lab with your IR800 divce you can check the simple configuration file [running_config](ir800config/running_config)
+Run Platform Info to check if your IoX host conectivity is succeful. 
 ```
 $ ioxclient platform info
 ```
 If you receive JSON platform information your connection is succeful. 
 
 #### Iperf server tool :
-You need the have the Iperf tool locally to test conecticity incase if your lab dosent have access to internet, the default Iperf server for testing is 'bouygues.iperf.fr', To install Iperf tool, you can find it at this [link](https://iperf.fr/iperf-download.php).
-If you need to test locally you can start a server locally 
+Lunch Iperf server locally on your machine
 ```
 $ iperf -s
 -----------------------------------------------------------
@@ -59,9 +61,9 @@ Server listening on 5201
 ## Usage:
 #### Deploy app to IoX :
 - Build image :
-Build the package from the downloded files  
+Build the iox package from the downloded folder  
 ```
-$ docker build -t gve_devnet/ioxiperf_app .
+IoX_Iperf_App/ $ docker build -t gve_devnet/iox_iperf_app .
 ```
 
 Make sure your image has been built
@@ -74,11 +76,11 @@ alpine                     3.7                 6d1ef012b567        9 months ago 
 - Package for IoX:
 Creat a package.tar file 
 ```
-$ ioxclient docker package gve_devnet/iox_iperf_pov:latest .
+IoX_Iperf_App/ $ ioxclient docker package gve_devnet/iox_iperf_pov:latest .
 ```
 Deploy the app to IoX
 ```
-$ ioxclient application install iox_iperf_pov package.tar
+IoX_Iperf_App/ $ ioxclient application install iox_iperf_pov package.tar
 Currently active profile :  default
 Command Name: application-install
 Saving current configuration
@@ -96,7 +98,7 @@ List of installed apps :
 - Activate and run:server
 To activate the IOx application, run the following command
 ```
-$ ioxclient application activate --payload activation.json iox_iperf_pov
+IoX_Iperf_App/ $ ioxclient application activate --payload activation.json iox_iperf_pov
 ```
 To start your application run the start command
 ```
@@ -108,13 +110,13 @@ $ ioxclient application start
 To check if the application is runing on the IoX device access the server address [http://10.10.20.51:5500/](http://10.10.20.51:5500/)
 ![alt text][Serevr]
 
-[Serevr]:./server.png "Server web"
+[Serevr]:img/server.png "Server web"
 - Use [postman](https://www.getpostman.com/) to test:
 You can import the postman collection and envirenement files to start testing using postman:
-Configure the IoX app to use your local Iperf server using the API endpoint POST /config, then run the Iperf GET reqest to test link from the IoX host to your machine
+Configure the IoX app to use your local Iperf server using the API endpoint POST /config, then run the Iperf GET reqest to test the link from the IoX host to your Iperf Server
 ![alt text][Postman]
 
-[Postman]:./postman.png "postman"
+[Postman]:img/postman.png "postman"
 
 To learn more about deploying IoX applications you can access DevNet labs for free [here](https://developer.cisco.com/learning/modules/iox-basic/iot-iox-app-docker/step/1)
 

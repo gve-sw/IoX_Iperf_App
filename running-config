@@ -1,0 +1,332 @@
+! Last configuration change at 20:53:28 UTC Tue Dec 17 2019 by cisco
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname ir829
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$i5sB$hP3yoOG9S3agBFHa6LD7a1
+enable password 7 0614002E58
+!
+aaa new-model
+!
+!
+aaa authorization exec default local 
+!
+!
+!
+!
+!
+aaa session-id common
+service-module wlan-ap 0 bootimage autonomous
+!
+ignition off-timer 900
+!
+ignition undervoltage threshold 11 000
+!
+no ignition enable
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+ip dhcp excluded-address 11.0.0.1
+ip dhcp excluded-address 10.0.10.1
+ip dhcp excluded-address 192.168.1.1 192.168.1.5
+!
+ip dhcp pool gospool
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1 
+ domain-name sample.com
+ dns-server 8.8.8.8 
+ option 42 ip 128.138.140.44 
+ lease 5
+   remember
+!
+ip dhcp pool pc
+ network 11.0.0.0 255.0.0.0
+ default-router 11.0.0.1 
+!         
+ip dhcp pool hostpool
+ network 10.0.0.0 255.255.255.0
+ default-router 10.0.0.1 
+ domain-name sample.com
+ dns-server 8.8.8.8 
+ option 42 ip 128.138.140.44 
+   remember
+!
+!
+!
+ip domain name tests.fr
+ip inspect udp idle-time 60
+ip inspect name permit-outbound tcp router-traffic
+ip inspect name permit-outbound udp router-traffic
+ip cef
+ipv6 unicast-routing
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+chat-script lte "" "AT!CALL" TIMEOUT 20 "OK"
+!
+crypto pki trustpoint TP-self-signed-422713650
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-422713650
+ revocation-check none
+ rsakeypair TP-self-signed-422713650
+!
+!
+crypto pki certificate chain TP-self-signed-422713650
+ certificate self-signed 01
+  30820229 30820192 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  30312E30 2C060355 04031325 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 34323237 31333635 30301E17 0D313930 37303331 35313832 
+  325A170D 32303031 30313030 30303030 5A303031 2E302C06 03550403 1325494F 
+  532D5365 6C662D53 69676E65 642D4365 72746966 69636174 652D3432 32373133 
+  36353030 819F300D 06092A86 4886F70D 01010105 0003818D 00308189 02818100 
+  AA14A50E 8028991A D438E2B4 38C5B6D7 9772466A B7A99840 A8A9C071 59C10524 
+  2A1F4B02 DDD4F5E7 BF26F354 C7C090A8 C959B74F 9CA09423 B94517CD A7324593 
+  35D3541E DE091851 99705320 8E944BC7 40618A56 A87136D4 D6DA070A 66AED993 
+  62DB1A2E 373E6C8E 881EA527 D5D42AD3 40A740D2 641526A5 A22F27F6 BA7492E3 
+  02030100 01A35330 51300F06 03551D13 0101FF04 05300301 01FF301F 0603551D 
+  23041830 16801440 D6B19696 FB012841 6706AA53 3E851957 D5B60030 1D060355 
+  1D0E0416 041440D6 B19696FB 01284167 06AA533E 851957D5 B600300D 06092A86 
+  4886F70D 01010505 00038181 0091E67F FAF46CD3 7ADB4B8B 00AEBEA5 F927633C 
+  A61485B1 8FC082DD DE45D26E 45D92B30 A4696371 69EF6208 4AB84F06 640ABB27 
+  0129DBA8 F12373CB 2608F703 A3E1BA1A 2DC3227E 1BBB4B60 006CAC3F C7017698 
+  57692FC2 4BD194CE 5D4CEC73 876BC173 90779420 977D8BAF C4DE15E7 76A03C5D 
+  3EC59870 F460F505 0D588813 76
+  	quit
+license udi pid IR829GW-LTE-GA-EK9 sn FGL1938256H
+!
+!
+!
+no spanning-tree vlan 10
+no spanning-tree vlan 11
+username cisco privilege 15 secret 5 $1$Vqq0$mPKXwet2ObVgW4XhBE1UL.
+username root privilege 15 password 7 0101090B4F
+!
+redundancy
+
+!
+!
+!
+!
+!
+controller Cellular 0
+ lte sim fast-switchover enable
+ lte failovertimer 5
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet1
+ no ip address
+!
+interface GigabitEthernet2
+ no ip address
+!
+interface GigabitEthernet3
+ no ip address
+!
+interface GigabitEthernet4
+ switchport access vlan 10
+ no ip address
+!
+interface Wlan-GigabitEthernet0
+ no ip address
+!
+interface GigabitEthernet5
+ description Provisioned by AGP v1.92 17-10-2019
+ ip address 192.168.1.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ duplex auto
+ speed auto
+ ipv6 address autoconfig
+ ipv6 enable
+!
+interface Cellular0
+ ip address negotiated
+ encapsulation slip
+ dialer in-band
+ dialer idle-timeout 0
+ dialer string lte
+ dialer-group 1
+ ipv6 address autoconfig
+!
+interface Cellular1
+ no ip address
+ encapsulation slip
+!
+interface wlan-ap0
+ no ip address
+!
+interface Vlan1
+ ip address 10.0.0.1 255.255.255.0
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Vlan10
+ ip address 10.10.20.82 255.255.255.0
+ ip access-group filter-internet in
+ ip inspect permit-outbound out
+!
+interface Vlan11
+ ip address 11.0.0.1 255.0.0.0
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Async0
+ description /dev/ttyS1 in IOx & controlled by line 1(baud rate, etc.) and line 1/5 
+ no ip address
+ encapsulation relay-line
+!
+interface Async1
+ description /dev/ttyS2 in IOx & controlled by line 2(baud rate, etc.) and line 1/6 
+ no ip address
+ encapsulation relay-line
+!
+!
+ip default-gateway 11.0.0.1
+ip forward-protocol nd
+!
+no ip http server
+ip http authentication local
+ip http secure-server
+ip http secure-client-auth
+ip http secure-port 8443
+!
+ip dns server
+ip nat inside source list 1 interface Vlan1 overload
+ip nat inside source list NAT_ACL interface GigabitEthernet1 overload
+ip nat inside source static tcp 192.168.1.6 8443 interface Vlan1 8443
+ip nat inside source static tcp 192.168.1.6 22 interface Vlan1 2222
+ip nat inside source static tcp 192.168.1.6 8000 interface Vlan1 8000
+ip nat inside source static tcp 192.168.1.6 5500 interface Vlan1 5500
+ip route 0.0.0.0 0.0.0.0 11.0.0.3
+ip route 0.0.0.0 0.0.0.0 10.10.20.254
+ip route 0.0.0.0 0.0.0.0 Cellular0 100
+ip route 0.0.0.0 0.0.0.0 Vlan10 dhcp
+ip ssh version 2
+ip scp server enable
+!
+ip access-list standard NAT_ACL
+ permit 10.0.10.0 0.0.0.255
+!
+ip access-list extended filter-internet
+ permit icmp any any echo
+ permit icmp any any echo-reply
+ permit icmp any any unreachable
+ permit icmp any any packet-too-big
+ permit icmp any any ttl-exceeded
+ permit udp any eq bootps host 255.255.255.255 eq bootpc
+ permit tcp any any eq 22
+!
+dialer-list 1 protocol ip permit
+dialer-list 1 protocol ipv6 permit
+ipv6 ioam timestamp
+!
+!
+access-list 1 permit any
+!
+!
+!
+control-plane
+!
+!
+!
+line con 0
+ stopbits 1
+line 1 2
+ transport preferred none
+ transport input all
+ transport output all
+ databits 7
+ parity odd
+ stopbits 1
+ speed 1200
+line 3    
+ script dialer lte
+ no exec
+ transport preferred lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+line 4
+ no activation-character
+ no exec
+ transport preferred none
+ transport input all
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+line 8
+ no exec
+ transport preferred lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+ transport output lat pad telnet rlogin lapb-ta mop udptn v120 ssh
+line 1/3
+ transport preferred none
+ transport output none
+ stopbits 1
+line 1/4
+ transport preferred none
+ transport input all
+ transport output none
+ stopbits 1
+line 1/5 1/6
+ transport preferred none
+ transport input all
+ transport output all
+ stopbits 1
+line vty 0 4
+ exec-timeout 0 0
+ password 7 02050D480809
+ transport input all
+!
+no scheduler max-task-time
+relay line 1 1/5 propagation
+relay line 2 1/6 propagation
+ntp update-calendar
+ntp server 128.138.140.44
+no iox hdm-enable
+iox client enable interface GigabitEthernet5
+no iox recovery-enable
+!
+!
+!
+!
+!
+!
+!
+!
+end

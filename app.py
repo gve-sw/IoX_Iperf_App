@@ -2,15 +2,40 @@ from flask import Flask, jsonify, request
 from flask_basicauth import BasicAuth
 import iperf3
 import json
+import os
+import logging
 
+#app basic config
 app = Flask(__name__)
 app.config['BASIC_AUTH_USERNAME'] = 'neo'
 app.config['BASIC_AUTH_PASSWORD'] = 'matrix'
 basic_auth = BasicAuth(app)
 
+#Iperf default server
 iperf_server='bouygues.iperf.fr'
 iperf_s_port=5200
 
+#App logging configuration
+try:
+    Logs_directory = os.environ['CAF_APP_LOG_DIR'] + "/"
+except KeyError as e:
+    # print(str(e) + " is non-existent")
+    Logs_directory = "./"
+
+strmhandler = logging.StreamHandler()
+strmhandler.setLevel(logging.DEBUG)
+app.logger.addHandler(strmhandler)
+app.logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler(Logs_directory + 'webapp.log')
+file_handler.setLevel(logging.DEBUG)
+gunicorn_logger = logging.getLogger('gunicorn.error')
+gunicorn_logger.addHandler(file_handler)
+
+
+
+
+
+#Index page of the app 
 @app.route('/')
 def index():
 	html = """
@@ -35,8 +60,10 @@ def index():
 	</body>
 	</html>
 	"""
+	app.logger.info("Served")
 	return html
 
+#Config API endpoint 
 @app.route('/config', methods=['POST'])
 @basic_auth.required
 def config():
@@ -44,20 +71,23 @@ def config():
 	global iperf_server,iperf_s_port
 	if not request.json or not 'iperf' in request.json:
 		abort(400)
+		app.logger.warning('worong reqest aborting')
 	try:
 		iperf_server = request.json['iperf']['host']
 		iperf_s_port=request.json['iperf']['port']
 	except Exception as e:
 		status='exception'
 		data='server error: '+str(e)
+		app.logger.exception(str(e))
 	else:
 		status="updated"
 		data=request.json['iperf']
 	finally:
+		app.logger.info("Iperf server updated")
 		return jsonify({'status':status, 'data':data }), 200
 
 
-
+#Iperf API endoint to lunch link tests
 @app.route('/iperf', methods=['GET'])
 @basic_auth.required
 def iperf():
@@ -79,6 +109,7 @@ def iperf():
 			status='error'
 			r=result.error
 	finally:
+		app.logger.info("Iperf test end")
 		return jsonify({'status':status,'data': r}), 200
 
 
