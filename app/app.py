@@ -7,8 +7,8 @@ import logging
 
 #app basic config
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'neo'
-app.config['BASIC_AUTH_PASSWORD'] = 'matrix'
+app.config['BASIC_AUTH_USERNAME'] = 'Put your user here'
+app.config['BASIC_AUTH_PASSWORD'] = 'Put your password here'
 basic_auth = BasicAuth(app)
 
 #Iperf default server
