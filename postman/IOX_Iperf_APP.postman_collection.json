@@ -36,57 +36,7 @@
 						"iperf"
 					]
 				}
-			},
-			"response": [
-				{
-					"name": "Iperf",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://10.10.20.51:5500/iperf",
-							"protocol": "http",
-							"host": [
-								"10",
-								"10",
-								"20",
-								"51"
-							],
-							"port": "5500",
-							"path": [
-								"iperf"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Server",
-							"value": "gunicorn/20.0.4"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 13 Dec 2019 20:50:42 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "1932"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"data\": {\n        \"end\": {\n            \"cpu_utilization_percent\": {\n                \"host_system\": 12.979823585337902,\n                \"host_total\": 17.839325315426354,\n                \"host_user\": 4.881301177392032,\n                \"remote_system\": 0.000796,\n                \"remote_total\": 0.001268,\n                \"remote_user\": 0.000475\n            },\n            \"sender_tcp_congestion\": \"cubic\",\n            \"streams\": [\n                {\n                    \"receiver\": {\n                        \"bits_per_second\": 898466.285327086,\n                        \"bytes\": 112385,\n                        \"end\": 1.000683069229126,\n                        \"seconds\": 1.000683069229126,\n                        \"socket\": 16,\n                        \"start\": 0\n                    },\n                    \"sender\": {\n                        \"bits_per_second\": 1717946.52359245,\n                        \"bytes\": 214890,\n                        \"end\": 1.000683069229126,\n                        \"max_rtt\": 224480,\n                        \"max_snd_cwnd\": 54340,\n                        \"mean_rtt\": 224480,\n                        \"min_rtt\": 224480,\n                        \"retransmits\": 12,\n                        \"seconds\": 1.000683069229126,\n                        \"socket\": 16,\n                        \"start\": 0\n                    }\n                }\n            ],\n            \"sum_received\": {\n                \"bits_per_second\": 898466.285327086,\n                \"bytes\": 112385,\n                \"end\": 1.000683069229126,\n                \"seconds\": 1.000683069229126,\n                \"start\": 0\n            },\n            \"sum_sent\": {\n                \"bits_per_second\": 1717946.52359245,\n                \"bytes\": 214890,\n                \"end\": 1.000683069229126,\n                \"retransmits\": 12,\n                \"seconds\": 1.000683069229126,\n                \"start\": 0\n            }\n        },\n        \"intervals\": [\n            {\n                \"streams\": [\n                    {\n                        \"bits_per_second\": 1717946.52359245,\n                        \"bytes\": 214890,\n                        \"end\": 1.000683069229126,\n                        \"omitted\": false,\n                        \"pmtu\": 1500,\n                        \"retransmits\": 12,\n                        \"rtt\": 224480,\n                        \"rttvar\": 3662,\n                        \"seconds\": 1.000683069229126,\n                        \"snd_cwnd\": 54340,\n                        \"socket\": 16,\n                        \"start\": 0\n                    }\n                ],\n                \"sum\": {\n                    \"bits_per_second\": 1717946.52359245,\n                    \"bytes\": 214890,\n                    \"end\": 1.000683069229126,\n                    \"omitted\": false,\n                    \"retransmits\": 12,\n                    \"seconds\": 1.000683069229126,\n                    \"start\": 0\n                }\n            }\n        ],\n        \"start\": {\n            \"connected\": [\n                {\n                    \"local_host\": \"192.168.10.3\",\n                    \"local_port\": 58514,\n                    \"remote_host\": \"192.168.55.1\",\n                    \"remote_port\": 5201,\n                    \"socket\": 16\n                }\n            ],\n            \"connecting_to\": {\n                \"host\": \"192.168.55.1\",\n                \"port\": 5201\n            },\n            \"cookie\": \"ovuwhm2xs5anqn2zemnouyuln3qghaya2yhn\",\n            \"rcvbuf_actual\": 87380,\n            \"sndbuf_actual\": 16384,\n            \"sock_bufsize\": 0,\n            \"system_info\": \"Linux iox-caf-1 4.4.119 #1 SMP Mon Oct 1 06:45:21 EDT 2018 x86_64\",\n            \"tcp_mss_default\": 1235,\n            \"test_start\": {\n                \"blksize\": 131072,\n                \"blocks\": 0,\n                \"bytes\": 0,\n                \"duration\": 1,\n                \"num_streams\": 1,\n                \"omit\": 0,\n                \"protocol\": \"TCP\",\n                \"reverse\": 0,\n                \"tos\": 0\n            },\n            \"timestamp\": {\n                \"time\": \"Fri, 13 Dec 2019 20:50:40 GMT\",\n                \"timesecs\": 1576270240\n            },\n            \"version\": \"iperf 3.2\"\n        }\n    },\n    \"status\": \"success\"\n}"
-				}
-			]
+			}
 		},
 		{
 			"name": "Config",
@@ -135,73 +85,7 @@
 						"config"
 					]
 				}
-			},
-			"response": [
-				{
-					"name": "Config",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"iperf\":\n\t{\n\t\t\"host\":\"192.168.55.1\",\n\t\t\"port\":\"5201\"\n\t}\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://10.10.20.51:5500/config",
-							"protocol": "http",
-							"host": [
-								"10",
-								"10",
-								"20",
-								"51"
-							],
-							"port": "5500",
-							"path": [
-								"config"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Server",
-							"value": "gunicorn/20.0.4"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 13 Dec 2019 20:50:26 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "60"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"updated\": {\n        \"iperf\": {\n            \"host\": \"192.168.55.1\",\n            \"port\": \"5201\"\n        }\n    }\n}"
-				}
-			]
+			}
 		},
 		{
 			"name": "index",
